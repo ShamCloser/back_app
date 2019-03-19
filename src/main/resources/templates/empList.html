@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Bootstrap Material Admin by Bootstrapious.com</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="robots" content="all,follow">
+    <!-- Bootstrap CSS-->
+    <link rel="stylesheet" href="asserts/css/bootstrap.min.css" th:href="@{/webjars/bootstrap/4.3.1/css/bootstrap.css}">
+    <!-- Font Awesome CSS-->
+    <link rel="stylesheet" href="asserts/font-awesome/css/font-awesome.min.css" th:href="@{/asserts/vendor/font-awesome/css/font-awesome.min.css}">
+    <!-- Fontastic Custom icon font-->
+    <link rel="stylesheet" href="asserts/css/fontastic.css" th:href="@{/asserts/css/fontastic.css}">
+    <!-- Google fonts - Poppins -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,700">
+    <!-- theme stylesheet-->
+    <link rel="stylesheet" href="asserts/css/style.default.css" th:href="@{/asserts/css/style.default.css}" id="theme-stylesheet">
+    <!-- Custom stylesheet - for your changes-->
+    <link rel="stylesheet" href="asserts/css/custom.css" th:href="@{/asserts/css/custom.css}">
+    <!-- Favicon-->
+    <link rel="shortcut icon" href="asserts/img/favicon.ico" th:href="@{/asserts/img/favicon.ico}">
+  </head>
+  <body>
+    <div class="page">
+      <!-- Main Navbar-->
+      <div th:replace="commons/bar::#main-header"></div>
+      <div class="page-content d-flex align-items-stretch"> 
+        <!-- Side Navbar -->
+        <div th:replace="commons/bar::#side-navbar(activeUri='empList.html')"></div>
+        <div class="content-inner">
+          <!-- Page Header-->
+          <div th:replace="commons/bar::#page-header(pText='Employee')"></div>
+          <!-- Breadcrumb-->
+          <div th:replace="commons/bar::#mainLi(liText='Employee')"></div>
+          <section class="tables">   
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col-lg-12">
+                  <div class="card">
+                    <div class="card-close">
+                      <div class="dropdown">
+                        <!--右侧按钮-->
+                        <button type="button" id="closeCard4" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-ellipsis-v"></i></button>
+                        <div aria-labelledby="closeCard4" class="dropdown-menu dropdown-menu-right has-shadow">
+                          <a href="#" data-toggle="modal" data-target="#myModal"  class="dropdown-item edit"><i class="	fa fa-user-plus"></i>添加员工</a>
+                          <!--<a href="#" id="del_emp" class="dropdown-item edit"><i class="	fa fa-user-times"></i>删除员工</a>-->
+                          <a href="#" class="dropdown-item edit"><i class="fa fa-level-down"></i>导入数据</a>
+                          <a href="#" class="dropdown-item edit"><i class="	fa fa-level-up"></i>导出数据</a>
+                          <a href="#" class="dropdown-item remove"><i class="fa fa-times"></i>关闭表</a>
+                        </div>
+
+                      </div>
+                      <!-- 弹出窗口-->
+                      <div id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" class="modal fade text-left">
+                        <div role="document" class="modal-dialog">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h4 id="exampleModalLabel" class="modal-title">
+                                <span class="	fa fa-user-plus"></span>员工添加</h4>
+                              <button type="button" data-dismiss="modal" aria-label="Close" class="close"><span aria-hidden="true">×</span></button>
+                            </div>
+                            <div class="modal-body">
+
+                              <form th:action="@{/emp}" method="post">
+                                <div class="row">
+                                  <label class="col-sm-4 form-control-label">基本信息<br><small class="text-primary">Basic information</small></label>
+                                  <div class="col-sm-6">
+                                    <div class="form-group-material">
+                                      <input id="emp-name" type="text" name="username" required class="input-material">
+                                      <label for="emp-name" class="label-material">Name      </label>
+                                    </div>
+                                    <div class="form-group-material">
+                                      <input id="emp-phone" type="text" name="phone" required class="input-material">
+                                      <label for="emp-phone" class="label-material">Phone      </label>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="line"></div>
+                                <div class="form-group row">
+                                  <label class="col-sm-4 form-control-label">性别<br><small class="text-primary">Gender</small></label>
+                                  <div class="col-sm-6">
+                                    <div class="i-checks">
+                                      <input id="gender-man" type="radio" value="1" name="gender" class="radio-template">
+                                      <label for="gender-man">男 <small class="text-primary">Gentleman</small></label>
+                                    </div>
+                                    <div class="i-checks">
+                                      <input id="gender-woman" type="radio" value="0" name="gender" class="radio-template">
+                                      <label for="gender-woman">女 <small class="text-primary">Lady</small></label>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="line"></div>
+                                <div class="form-group row">
+                                  <label class="col-sm-4 form-control-label">所属部门<br><small class="text-primary">Department</small></label>
+                                  <div class="col-sm-6">
+                                    <select name="deptId" class="form-control mb-3" >
+                                      <option value="1" th:value="${department.deptId}"
+                                              th:each="department:${departments}" th:text="${department.deptName}">1</option>
+                                    </select>
+                                  </div>
+                                </div>
+                                <div class="modal-footer">
+                                  <button type="button" data-dismiss="modal" class="btn btn-secondary">Close</button>
+                                  <button type="submit" class="btn btn-primary">Save changes</button>
+                                </div>
+                              </form>
+                            </div>
+
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="card-header d-flex align-items-center">
+                      <h3 class="h4">Employee Table</h3>
+                    </div>
+                    <div class="card-body">
+                      <div class="table-responsive">   
+                        <table class="table table-hover table-sm">
+                          <thead>
+                            <tr>
+                              <th>#</th>
+                              <th style="text-align: center" >部门</th>
+                              <th style="text-align: center">姓名</th>
+                              <th style="text-align: center">性别</th>
+                              <th style="text-align: center">手机号</th>
+                              <th style="text-align: center">地址</th>
+                              <th style="text-align: center">操作</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr th:each="user:${users}">
+                              <th scope="row" th:text="${user.id}"></th>
+                              <td style="text-align: center" th:each="department:${departments}" th:remove="${department.deptId!=user.deptId}?all " th:text="${department.deptName}">
+                              </td>
+                              <td style="text-align: center" >[[${user.username}]]</td>
+                              <td style="text-align: center" th:text="${user.gender==1}?'男':'女'"></td>
+                              <td style="text-align: center" th:text="${user.phone}"></td>
+                              <td style="text-align: center" th:text="${user.address}"></td>
+                              <td class="btn-group-sm" style="text-align: center">
+                                <a class="btn btn-sm btn-outline-info" th:href="@{/emp/}+${user.id}">
+                                  <span class="fa fa-edit"></span>修改</a>
+                                <a class="btn btn-sm btn-outline-warning">
+                                  <span class="fa fa-pencil-square-o"></span>详细修改</a>
+                                <!--style="visibility: hidden"-->
+                                <button type="button" th:attr="del_uri=@{/emp/}+${user.id}" class="btn btn-sm btn-outline-danger del_btn">
+                                  <span class="fa fa-user-times">删除</span>
+                                </button>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+
+                      </div>
+                      <form id="deleteEmpForm"  method="post">
+                        <input type="hidden" name="_method" value="delete"/>
+                      </form>
+                    </div>
+                    <div>
+                      <ul class="pagination pagination-sm">
+                        <li class="page-item disabled">
+                          <a class="page-link" href="#" th:text="'共 '+${users.totalElements}+' 条  '"></a>
+                        </li>
+                        <li class="page-item disabled">
+                          <a class="page-link" href="#" th:text="'共 '+${users.totalPages}+' 页/目前第 '+${page}+' 页'"></a>
+                        </li>
+                        <li class="page-item disabled" th:class="${page}==1?'page-item disabled':'page-item'">
+                          <a class="page-link" href="#" th:href="@{emps(page=${users.number})}">&laquo;</a>
+                        </li>
+                        <!--做Pagination totalPages<=6时-->
+                        <div th:if="${(users.totalPages <= 6) and (users.totalPages > 0)}" th:remove="tag">
+                          <div th:each="pg:${#numbers.sequence(1,users.totalPages)}" th:remove="tag">
+                            <li class="page-item" th:class="${page}==${pg}?'page-item active':'page-item'">
+                              <a class="page-link" href="#" th:text="${pg}" th:href="@{/emps(page=${pg})}"></a>
+                            </li>
+                          </div>
+                        </div>
+                        <!--做Pagination totalPages>6时-->
+                        <div th:if="${(users.totalPages > 6)}" th:remove="tag">
+                          <!--输出1-5页-->
+                          <div th:each="pg:${#numbers.sequence(1,5)}" th:remove="tag">
+                            <li class="page-item" th:class="${page}==${pg}?'page-item active':'page-item'">
+                              <a class="page-link" href="#" th:text="${pg}" th:href="@{/emps(page=${pg})}"></a>
+                            </li>
+                          </div>
+                          <!--输出省略号-->
+                          <li class="page-item disabled">
+                            <a class="page-link" href="#">...</a>
+                          </li>
+                          <!--输出最后一页数-->
+                          <li class="page-item" th:class="${page}==${users.totalPages}?'page-item active':'page-item'">
+                            <a class="page-link" href="#" th:text="${users.totalPages}" th:href="@{/emps(page=${users.totalPages})}">...</a>
+                          </li>
+                        </div>
+
+                        <li class="page-item" th:class="${page}==${users.totalPages}?'page-item disabled':'page-item'">
+                          <a class="page-link" href="#" th:href="@{emps(page=${page+1})}">&raquo;</a>
+                        </li>
+
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+          <!-- Page Footer-->
+          <footer class="main-footer">
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col-sm-6">
+                  <p>Your company &copy; 2017-2019</p>
+                </div>
+                <div class="col-sm-6 text-right">
+                  <p>Design by Bootstrapious.More Templates <a href="http://www.cssmoban.com/" target="_blank" title="模板之家">模板之家</a> - Collect from <a href="http://www.cssmoban.com/" title="网页模板" target="_blank">网页模板</a></p>
+                  <!-- Please do not remove the backlink to us unless you support further theme's development at https://bootstrapious.com/donate. It is part of the license conditions. Thank you for understanding :)-->
+                </div>
+              </div>
+            </div>
+          </footer>
+        </div>
+      </div>
+    </div>
+    <!-- JavaScript files-->
+    <script src="asserts/jquery/jquery.min.js" th:src="@{/asserts/vendor/jquery/jquery.min.js}"></script>
+    <script src="asserts/popper/umd/popper.min.js" th:src="@{/asserts/vendor/popper.js/umd/popper.min.js}"></script>
+    <script src="asserts/bootstrap/js/bootstrap.min.js" th:src="@{/asserts/vendor/bootstrap/js/bootstrap.min.js}"></script>
+    <script src="asserts/jquery.cookie/jquery.cookie.js" th:src="@{/asserts/vendor/jquery.cookie/jquery.cookie.js}"> </script>
+    <script src="asserts/chart/Chart.min.js" th:src="@{/asserts/vendor/chart-js/Chart.min.js}"></script>
+    <script src="asserts/jquery-validation/jquery.validate.min.js" th:src="@{/asserts/vendor/jquery-validation/jquery.validate.min.js}"></script>
+    <script src="asserts/js/charts-home.js" th:src="@{/asserts/js/charts-home.js}"></script>
+    <!-- Main File-->
+    <script src="asserts/js/front.js" th:src="@{/asserts/js/front.js}"></script>
+    <!--<script>-->
+      <!--$("#del_emp").click(function () {-->
+        <!--$(".del_btn").removeAttr("style");-->
+      <!--});-->
+    <!--</script>-->
+    <script>
+      $(".del_btn").click(function(){
+        //删除当前员工的
+        $("#deleteEmpForm").attr("action",$(this).attr("del_uri")).submit();
+        return false;
+      });
+    </script>
+  </body>
+
+</html>

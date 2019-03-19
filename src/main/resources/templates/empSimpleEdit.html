@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>修改员工信息</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="robots" content="all,follow">
+    <!-- Bootstrap CSS-->
+    <link rel="stylesheet" href="asserts/css/bootstrap.min.css" th:href="@{/webjars/bootstrap/4.3.1/css/bootstrap.css}">
+    <!-- Font Awesome CSS-->
+    <link rel="stylesheet" href="asserts/font-awesome/css/font-awesome.min.css" th:href="@{/asserts/vendor/font-awesome/css/font-awesome.min.css}">
+    <!-- Fontastic Custom icon font-->
+    <link rel="stylesheet" href="asserts/css/fontastic.css" th:href="@{/asserts/css/fontastic.css}">
+    <!-- Google fonts - Poppins -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,700">
+    <!-- theme stylesheet-->
+    <link rel="stylesheet" href="asserts/css/style.default.css" th:href="@{/asserts/css/style.default.css}" id="theme-stylesheet">
+    <!-- Custom stylesheet - for your changes-->
+    <link rel="stylesheet" href="asserts/css/custom.css" th:href="@{/asserts/css/custom.css}">
+    <!-- Favicon-->
+    <link rel="shortcut icon" href="asserts/img/favicon.ico" th:href="@{/asserts/img/favicon.ico}">
+
+  </head>
+  <body>
+    <div class="page">
+      <!-- Main Navbar-->
+      <div th:replace="commons/bar::#main-header"></div>
+      <div class="page-content d-flex align-items-stretch"> 
+        <!-- Side Navbar -->
+        <div th:replace="commons/bar::#side-navbar(activeUri='empList.html')"></div>
+        <div class="content-inner">
+          <!-- Page Header-->
+          <div th:replace="commons/bar::#page-header(pText='Employee')"></div>
+          <!-- Breadcrumb-->
+          <div th:replace="commons/bar::#mainLi(liText='Employee')"></div>
+          <!-- Forms Section-->
+          <section class="forms"> 
+            <div class="container-fluid">
+              <div class="row">
+                <!-- Form Elements -->
+                <div class="col-lg-11">
+                  <div class="card">
+                    <div class="card-header d-flex align-items-center">
+                      <h3 class="h4">
+                        <span class="fa fa-pencil-square-o"></span>
+                         Edit Employee
+                      </h3>
+                    </div>
+                    <div class="card-body">
+                      <form class="form-horizontal" th:action="@{/emp}" method="post">
+                          <!--发送put请求修改员工数据-->
+                          <!--
+                          1、SpringMVC中配置HiddenHttpMethodFilter;（SpringBoot自动配置好的）
+                          2、页面创建一个post表单
+                          3、创建一个input项，name="_method";值就是我们指定的请求方式
+                          -->
+                          <input type="hidden" name="_method" value="put" th:if="${user!=null}"/>
+                          <input type="hidden" name="id" th:if="${user!=null}" th:value="${user.id}">
+                        <div class="row">
+                          <label class="col-sm-3 form-control-label">基本信息<br><small class="text-primary">Basic information</small></label>
+                          <div class="col-sm-6">
+                            <div class="form-group-material">
+                              <input id="emp-name" th:value="${user.username}" type="text" name="username" required class="input-material">
+                              <label for="emp-name" class="label-material">Name      </label>
+                            </div>
+                            <div class="form-group-material">
+                              <input id="emp-phone" th:value="${user.phone}" type="text" name="phone" required class="input-material">
+                              <label for="emp-phone" class="label-material">Phone      </label>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="line"></div>
+                        <div class="form-group row">
+                          <label class="col-sm-3 form-control-label">性别<br><small class="text-primary">Gender</small></label>
+                          <div class="col-sm-9">
+                            <div class="i-checks">
+                                <!--th:checked="${employee.gender==1}"-->
+                              <input id="gender-man" type="radio" th:checked="${user.gender==1}"  value="1" name="gender" class="radio-template">
+                              <label for="gender-man">男 <small class="text-primary">Gentleman</small></label>
+                            </div>
+                            <div class="i-checks">
+                                <!--th:checked="${employee.gender==0}"-->
+                              <input id="gender-woman" type="radio" value="0" th:checked="${user.gender==0}" name="gender" class="radio-template">
+                              <label for="gender-woman">女 <small class="text-primary">Lady</small></label>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="line"></div>
+                        <div class="form-group row">
+                          <label class="col-sm-3 form-control-label">所属部门<br><small class="text-primary">Department</small></label>
+                          <div class="col-sm-6">
+                            <select name="deptId" class="form-control mb-3" >
+                              <option value="1" th:selected="${department.deptId == user.deptId}" th:value="${department.deptId}"
+                                      th:each="department:${departments}" th:text="${department.deptName}">1</option>
+                            </select>
+                          </div>
+                        </div>
+
+                        <div class="line"></div>
+                        <div class="form-group row">
+                          <div class="col-sm-4 offset-sm-3">                      
+                            <button type="submit" class="btn btn-primary">Save changes</button>
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+          <!-- Page Footer-->
+          <footer class="main-footer">
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col-sm-6">
+                  <p>Your company &copy; 2017-2019</p>
+                </div>
+                <div class="col-sm-6 text-right">
+                  <p>Design by Bootstrapious.More Templates <a href="http://www.cssmoban.com/" target="_blank" title="模板之家">模板之家</a> - Collect from <a href="http://www.cssmoban.com/" title="网页模板" target="_blank">网页模板</a></p>
+                  <!-- Please do not remove the backlink to us unless you support further theme's development at https://bootstrapious.com/donate. It is part of the license conditions. Thank you for understanding :)-->
+                </div>
+              </div>
+            </div>
+          </footer>
+        </div>
+      </div>
+    </div>
+    <!-- JavaScript files-->
+    <script src="asserts/jquery/jquery.min.js" th:src="@{/asserts/vendor/jquery/jquery.min.js}"></script>
+    <script src="asserts/popper/umd/popper.min.js" th:src="@{/asserts/vendor/popper.js/umd/popper.min.js}"></script>
+    <script src="asserts/bootstrap/js/bootstrap.min.js" th:src="@{/asserts/vendor/bootstrap/js/bootstrap.min.js}"></script>
+    <script src="asserts/jquery.cookie/jquery.cookie.js" th:src="@{/asserts/vendor/jquery.cookie/jquery.cookie.js}"> </script>
+    <script src="asserts/chart/Chart.min.js" th:src="@{/asserts/vendor/chart-js/Chart.min.js}"></script>
+    <script src="asserts/jquery-validation/jquery.validate.min.js" th:src="@{/asserts/vendor/jquery-validation/jquery.validate.min.js}"></script>
+    <script src="asserts/js/charts-home.js" th:src="@{/asserts/js/charts-home.js}"></script>
+    <!-- Main File-->
+    <script src="asserts/js/front.js" th:src="@{/asserts/js/front.js}"></script>
+  </body>
+</html>

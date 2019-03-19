@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>登录</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="robots" content="all,follow">
+    <!-- Bootstrap CSS-->
+    <link rel="stylesheet" href="asserts/css/bootstrap.min.css" th:href="@{/webjars/bootstrap/4.3.1/css/bootstrap.css}">
+    <!-- Font Awesome CSS-->
+    <link rel="stylesheet" href="asserts/font-awesome/css/font-awesome.min.css" th:href="@{/asserts/vendor/font-awesome/css/font-awesome.min.css}">
+    <!-- Fontastic Custom icon font-->
+    <link rel="stylesheet" href="asserts/css/fontastic.css" th:href="@{/asserts/css/fontastic.css}">
+    <!-- Google fonts - Poppins -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,700">
+    <!-- theme stylesheet-->
+    <link rel="stylesheet" href="asserts/css/style.default.css" th:href="@{/asserts/css/style.default.css}" id="theme-stylesheet">
+    <!-- Custom stylesheet - for your changes-->
+    <link rel="stylesheet" href="asserts/css/custom.css" th:href="@{/asserts/css/custom.css}">
+    <!-- Favicon-->
+    <link rel="shortcut icon" href="asserts/img/favicon.ico" th:href="@{/asserts/img/favicon.ico}">
+  </head>
+  <body>
+    <div class="page login-page">
+      <div class="container d-flex align-items-center">
+        <div class="form-holder has-shadow">
+          <div class="row">
+            <!-- Logo & Information Panel-->
+            <div class="col-lg-6">
+              <div class="info d-flex align-items-center">
+                <div class="content">
+                  <div class="logo">
+                    <h1>后台管理系统</h1>
+                  </div>
+                  <p>让我们将事前的忧虑，换为事前的思考和计划吧！</p>
+                </div>
+              </div>
+            </div>
+            <!-- Form Panel    -->
+            <div class="col-lg-6 bg-white">
+              <div class="form d-flex align-items-center">
+                <div class="content">
+                  <form  class="form-validate" th:action="@{/user/login}" method="post">
+                    <div class="form-group">
+                      <input id="login-username" type="text" name="username" required data-msg="Please enter your username" class="input-material">
+                      <label for="login-username" class="label-material">User Name</label>
+                    </div>
+                    <div class="form-group">
+                      <input id="login-password" name="password" type="password" required data-msg="Please enter your password" class="input-material">
+                      <label for="login-password" class="label-material">Password</label>
+                    </div>
+                    <button type="submit" id="login" class="btn btn-primary">Login</button>
+                    <p style="color: red" th:text="${msg}" th:if="${not #strings.isEmpty(msg)}"></p>
+                    <!-- This should be submit button but I replaced it with <a> for demo purposes-->
+                  </form>
+                  <a href="#" class="forgot-pass">忘记密码?</a><br><small>还没有录入请先? </small><a href="register.html" class="signup">Signup</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="copyrights text-center">
+        <p>Design by <a href="#" class="external">后台管理系统</a>
+          <!-- Please do not remove the backlink to us unless you support further theme's development at https://bootstrapious.com/donate. It is part of the license conditions. Thank you for understanding :)-->
+        </p>
+      </div>
+    </div>
+    <!-- JavaScript files-->
+    <script src="asserts/jquery/jquery.min.js" th:src="@{/asserts/vendor/jquery/jquery.min.js}"></script>
+    <script src="asserts/popper/umd/popper.min.js" th:src="@{/asserts/vendor/popper.js/umd/popper.min.js}"></script>
+    <script src="asserts/bootstrap/js/bootstrap.min.js" th:src="@{/asserts/vendor/bootstrap/js/bootstrap.min.js}"></script>
+    <script src="asserts/jquery.cookie/jquery.cookie.js" th:src="@{/asserts/vendor/jquery.cookie/jquery.cookie.js}"> </script>
+    <script src="asserts/chart/Chart.min.js" th:src="@{/asserts/vendor/chart-js/Chart.min.js}"></script>
+    <script src="asserts/jquery-validation/jquery.validate.min.js" th:src="@{/asserts/vendor/jquery-validation/jquery.validate.min.js}"></script>
+    <!-- Main File-->
+    <script src="asserts/js/front.js" th:src="@{/asserts/js/front.js}"></script>
+  </body>
+</html>
