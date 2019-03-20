@@ -1,11 +1,17 @@
 package com.springboot.entity;
 
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
 /**
  * @ project  项目介绍
  * @ author  clsr
  * @ date  2019/3/8
  */
 public class Customer {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String name;
     private String phone;
