@@ -13,6 +13,8 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;//自增id
     @Column
+    private String userNum;
+    @Column
     private String username;//用户名
     @Column
     private String password;//密码
@@ -35,6 +37,14 @@ public class User {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getUserNum() {
+        return userNum;
+    }
+
+    public void setUserNum(String userNum) {
+        this.userNum = userNum;
     }
 
     public String getUsername() {
@@ -105,6 +115,7 @@ public class User {
     public String toString() {
         return "User{" +
                 "id=" + id +
+                ", userNum='" + userNum + '\'' +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", gender=" + gender +

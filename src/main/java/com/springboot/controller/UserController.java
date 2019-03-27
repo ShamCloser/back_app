@@ -2,13 +2,10 @@ package com.springboot.controller;
 
 import com.springboot.entity.Department;
 import com.springboot.entity.User;
-import com.springboot.repository.DeptRepository;
-import com.springboot.repository.UserRepository;
+import com.springboot.service.IDeptService;
+import com.springboot.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -24,10 +21,11 @@ import java.util.Map;
  */
 @Controller
 public class UserController {
+
     @Autowired
-    UserRepository userRepository;
+    IUserService userService;
     @Autowired
-    DeptRepository deptRepository;
+    IDeptService deptService;
 
     /**
      * 登录
@@ -40,10 +38,10 @@ public class UserController {
     @PostMapping("/user/login")
     public String handleLogin(@RequestParam("username") String username,@RequestParam("password") String password,
                              HttpSession session, Map<String,Object> map){
-        User user = userRepository.findByUsernameAndPassword(username,password);
+        User user = userService.loadUserByUsernameAndPassword(username,password);
         if (user != null){
             session.setAttribute("user",user);
-            return "redirect:/main.html";
+            return "redirect:/main";
         } else {
             map.put("msg","用户名或密码错误");
             return "login";
@@ -59,12 +57,10 @@ public class UserController {
      */
     @GetMapping("/emps")
     public String userList(@RequestParam(value = "page",defaultValue = "1") Integer page,
-                           @RequestParam(value = "size",defaultValue = "12") Integer size,
+                           @RequestParam(value = "size",defaultValue = "10") Integer size,
                            Model model){
-        Sort sort = new Sort(Sort.Direction.ASC,"id");
-        Pageable pageable = new PageRequest(page-1,size,sort);
-        Page<User> users = userRepository.findAll(pageable);
-        Collection<Department> departments = deptRepository.findAll();
+        Page<User> users = userService.userList(page-1,size);
+        Collection<Department> departments = deptService.allDepartment();
         model.addAttribute("users",users);
         model.addAttribute("page",page);
         model.addAttribute("departments",departments);
@@ -79,10 +75,10 @@ public class UserController {
      */
     @PostMapping("/emp")
     public String addUser(User user,Integer deptId){
-        Department department = deptRepository.findDepartmentByDeptId(deptId);
+        Department department = deptService.findDeptByDeptId(deptId);
         System.out.println("保存员工："+user);
         System.out.println("部门:"+ department);
-        userRepository.save(user);
+        userService.save(user);
         return "redirect:/emps";
     }
 
@@ -93,8 +89,8 @@ public class UserController {
      */
     @GetMapping("/emp/{id}")
     public String toEditSimple(@PathVariable("id") Integer id, Model model){
-        User user = userRepository.findOne(id);
-        Collection<Department> departments = deptRepository.findAll();
+        User user = userService.findUserById(id);
+        Collection<Department> departments = deptService.allDepartment();
         model.addAttribute("departments",departments);
         model.addAttribute("user",user);
         return "empSimpleEdit";
@@ -108,13 +104,13 @@ public class UserController {
     @PutMapping("/emp")
     public String editUser(User user){
         System.out.println("保存员工："+user);
-        userRepository.save(user);
+        userService.save(user);
         return "redirect:/emps";
     }
 
     @DeleteMapping("/emp/{id}")
     public String deleteUser(@PathVariable("id") Integer id){
-        userRepository.delete(id);
+        userService.deleteUser(id);
         return "redirect:/emps";
     }
 }
